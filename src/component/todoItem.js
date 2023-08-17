@@ -1,7 +1,15 @@
+import { useState } from "react";
+import classes from "./todoItem.module.css";
+
 const TodoItem = () => {
+  const [completed, setCompleted] = useState(true);
   return (
     <div>
-      <h5>Task</h5>
+      <div className={classes.todoBoxSection}>
+        <input type="checkbox" id="status" name="status" />
+        <h5 className={completed == true ? classes.completedTask : ""}>Task</h5>
+        <button>Delete</button>
+      </div>
     </div>
   );
 };
