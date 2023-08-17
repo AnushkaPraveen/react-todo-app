@@ -1,0 +1,16 @@
+.todoBoxSection {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.todoBox {
+    width: 200px;
+    height: 100px;
+    background-color: blue;
+}
+
+.completedTask {
+    text-decoration-line: line-through;
+}
