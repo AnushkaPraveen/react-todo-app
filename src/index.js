@@ -1,13 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import 'bootstrap/dist/css/bootstrap.css';
+// Put any other imports below so that CSS from your
+// components takes precedence over default styles.
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { TodoContextProvider } from "./store/todoContext";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <TodoContextProvider>
+      <App />
+    </TodoContextProvider>
   </React.StrictMode>
 );
 
