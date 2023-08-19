@@ -4,19 +4,24 @@ const TodoContext = React.createContext({
   tasks: "sample",
 });
 
-const tasks = [];
+const defaultTodoState = {
+  tasks: [],
+  modalShow: false,
+};
 const todoReducer = (state, action) => {
   switch (action.type) {
-    case "ADD": {
-      return [...state, action.task];
-    }
+    case "ADD":
+      return { ...state, tasks: [...state.tasks, action.task] };
+
     case "REMOVE": {
-      return state.filter((task) => task.id !== action.id);
+      return {
+        ...state,
+        tasks: state.tasks.filter((task) => task.id !== action.id),
+      };
     }
     case "UPDATE": {
-      let taskIndex = state.findIndex((task) => task.id === action.id);
-      const updatedState = state.map((task, index) => {
-        if (index === taskIndex) {
+      const updatedTasks = state.tasks.map((task) => {
+        if (task.id === action.id) {
           return {
             ...task,
             isCompleted: !task.isCompleted,
@@ -24,18 +29,26 @@ const todoReducer = (state, action) => {
         }
         return task;
       });
-
-      // Return the updated state
-      return updatedState;
+      return {
+        ...state,
+        tasks: updatedTasks,
+      };
+    }
+    case "MODALSHOW": {
+      return { ...state, modalShow: !state.modalShow };
     }
     default:
       return state;
   }
 };
 export const TodoContextProvider = (props) => {
-  const [todoState, dispatchTodoAction] = useReducer(todoReducer, tasks);
+  const [todoState, dispatchTodoAction] = useReducer(
+    todoReducer,
+    defaultTodoState
+  );
   const todoContext = {
-    items: todoState,
+    items: todoState.tasks,
+    modalShow: todoState.modalShow,
     todoDispatch: dispatchTodoAction,
   };
   return (
