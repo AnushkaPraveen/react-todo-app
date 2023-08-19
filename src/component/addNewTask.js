@@ -1,10 +1,12 @@
-import { useContext, useState } from "react";
+import { useContext, useState, Alert } from "react";
+import { v4 as uuidv4 } from "uuid";
 import TodoContext from "../store/todoContext";
 import { Modal, Button } from "react-bootstrap";
 
-const AddNewTask = ({show}) => {
+const AddNewTask = () => {
   const [newTask, setNewTask] = useState();
-  const ctx = useContext(TodoContext);
+  const [taskValidation, setTaskValidation] = useState(false);
+  const taskContext = useContext(TodoContext);
 
   const addNewTaskHandler = (event) => {
     event.preventDefault();
@@ -13,27 +15,58 @@ const AddNewTask = ({show}) => {
   };
 
   const submit = () => {
-    ctx.todoDispatch({
-      type: "ADD",
-      task: {
-        id: Math.floor(Math.random() * 6) + 1,
-        name: newTask,
-        isCompleted: false,
-      },
-    });
+    if (!newTask) {
+      setTaskValidation(true);
+    } else {
+      try {
+        const newTaskObject = {
+          id: uuidv4(),
+          name: newTask,
+          isCompleted: false,
+        };
+        taskContext.todoDispatch({
+          type: "ADD",
+          task: newTaskObject,
+        });
+        handleModal();
+        setTaskValidation(false);
+        setNewTask("");
+      } catch (err) {
+        alert("Something Went Wrong!");
+      }
+    }
+  };
+
+  const handleModal = () => {
+    try {
+      taskContext.todoDispatch({
+        type: "MODALSHOW",
+      });
+    } catch (err) {
+      alert("Something Went Wrong!");
+    }
   };
 
   return (
-    <Modal show={show}>
-      <Modal.Header >
-        <Modal.Title>Add New Item</Modal.Title>
+    <Modal show={taskContext.modalShow}>
+      <Modal.Header>
+        <Modal.Title>Add New Task</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <label>Title</label>
-        <input type="text" id="task" name="task" onChange={addNewTaskHandler} />
+        <input
+          type="text"
+          id="task"
+          name="task"
+          placeholder="type your task..."
+          onChange={addNewTaskHandler}
+        />
+        {taskValidation && <p>Please enter the any task..</p>}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary">Cancel</Button>
+        <Button variant="secondary" onClick={handleModal}>
+          Cancel
+        </Button>
         <Button variant="primary" onClick={submit}>
           Confirm
         </Button>
