@@ -7,6 +7,7 @@ const TodoContext = React.createContext({
 const defaultTodoState = {
   tasks: [],
   modalShow: false,
+  loadingStatus: false,
 };
 const todoReducer = (state, action) => {
   switch (action.type) {
@@ -37,6 +38,9 @@ const todoReducer = (state, action) => {
     case "MODALSHOW": {
       return { ...state, modalShow: !state.modalShow };
     }
+    case "LOADING": {
+      return { ...state, loadingStatus: action.status };
+    }
     default:
       return state;
   }
@@ -46,10 +50,22 @@ export const TodoContextProvider = (props) => {
     todoReducer,
     defaultTodoState
   );
+
+  const setLoadingStatus = (status) => {
+    dispatchTodoAction({ type: "LOADING", status: status });
+  };
+
+  const modalHandle = () => {
+    dispatchTodoAction({ type: "MODALSHOW" });
+  };
+
   const todoContext = {
     items: todoState.tasks,
     modalShow: todoState.modalShow,
+    loadingStatus: todoState.loadingStatus,
     todoDispatch: dispatchTodoAction,
+    setLoadingStatus: setLoadingStatus,
+    modalHandle: modalHandle,
   };
   return (
     <TodoContext.Provider value={todoContext}>
