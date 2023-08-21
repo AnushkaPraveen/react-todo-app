@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 import TodoContext from "../store/todoContext";
 import { CreateTask } from "../api/todoApi";
 import { Modal, Button } from "react-bootstrap";
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 import './addnewtask.css';
 
 const AddNewTask = () => {
@@ -30,6 +32,9 @@ const AddNewTask = () => {
         };
         await CreateTask(newTaskObject);
         taskContext.setTasks(newTaskObject);
+        toast.success("Task Created Successfully !", {
+          position: toast.POSITION.TOP_CENTER
+        });
         setTaskValidation(false);
         taskContext.setLoadingStatus(false);
         setNewTask("");
