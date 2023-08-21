@@ -2,7 +2,8 @@ import { useContext } from "react";
 import AddNewTask from "./addNewTask";
 import TodoItem from "./todoItem";
 import TodoContext from "../store/todoContext";
-import { Button } from "react-bootstrap";
+import { PiClipboardText } from "react-icons/pi";
+import classes from "./home.module.css";
 
 const Home = () => {
   const taskContext = useContext(TodoContext);
@@ -16,12 +17,27 @@ const Home = () => {
     <>
       <h1>todo</h1>
       <AddNewTask />
-      <Button onClick={handleModal}>Add new Task</Button>
+
+      <button type="button" className="btn btn-primary" onClick={handleModal}>
+        Add new Task
+      </button>
       <h5>Todo List</h5>
-      {taskContext.items.length < 1 ? <p>No Data</p> : ""}
-      {taskContext.items.map((task) => (
-        <TodoItem key={task.id} content={task} />
-      ))}
+      {taskContext.loadingStatus === true ? (
+        <div className="spinner-border text-info" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      ) : (
+        taskContext.items.map((task) => (
+          <TodoItem key={task.id} content={task} />
+        ))
+      )}
+      {taskContext.items.length < 1 ? (
+        <div className={classes.noDataSection}>
+          <p>No Data</p> <PiClipboardText size={55} />
+        </div>
+      ) : (
+        ""
+      )}
     </>
   );
 };
