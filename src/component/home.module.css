@@ -1,3 +1,16 @@
 .noDataSection{
     margin-top: 10px;
 }
+.todolistSection{
+    margin-top: 60px;
+}
+.mainTitle{
+    margin-top: 50px;
+}
+.addNewTaskButton{
+    margin-top: 10px;
+}
+
+.todoListTitle{
+    color:rgb(38, 128, 231) ;
+}
