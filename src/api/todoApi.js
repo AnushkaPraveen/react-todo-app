@@ -14,24 +14,71 @@ export const CreateTask = async (data) => {
     console.log("Response:", response.data);
   } catch (error) {
     console.error("Error:", error);
+    return error;
   }
 };
 
-export const DeleteTask=async(uuid)=>{
+export const DeleteTask = async (uuid) => {
   const url = "/api/v1/tasks";
   const apiKey = "eHTC1vBQCy2vmpJqDarU3hecbRMt60i21prC65VpeVuMYLDPKQ"; 
-const payload=[{
-  _uuid:"0e2942a1-93f9-41d2-b6a1-d269b60b6162"
-}]
+
+  let data = JSON.stringify([
+    {
+      "_uuid": uuid
+    }
+  ]);
   const headers = {
     "Content-Type": "application/json",
     "Authorization": `Bearer ${apiKey}`,
   }
 
   try{
-    const response = await axios.delete(url, payload, { headers });
+    const response = await axios.delete(url, {headers,data:data });
     console.log("Response:", response.data);
   } catch (error) {
     console.error("Error:", error);
+    return error;
+  }
+};
+
+export const GetAllTasks=async() => {
+  const url = "/api/v1/tasks";
+  const apiKey = "eHTC1vBQCy2vmpJqDarU3hecbRMt60i21prC65VpeVuMYLDPKQ"; 
+
+  const headers = {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${apiKey}`,
+  };
+  
+  try {
+    const response = await axios.get(url, { headers });
+    console.log("Response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    return error;
+  }
+}
+
+export const UpdateTask= async (uuid,status) => {
+  const url = `/api/v1/tasks/${uuid}`;
+  const apiKey = "eHTC1vBQCy2vmpJqDarU3hecbRMt60i21prC65VpeVuMYLDPKQ"; 
+
+  const headers = {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${apiKey}`,
+  };
+
+  const payload={
+    isCompleted:!status
+  }
+  
+  try {
+    const response = await axios.put(url, payload,{ headers });
+    console.log("Response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    return error;
   }
 }
