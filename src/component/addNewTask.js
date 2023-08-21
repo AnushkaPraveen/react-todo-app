@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import TodoContext from "../store/todoContext";
 import { CreateTask } from "../api/todoApi";
 import { Modal, Button } from "react-bootstrap";
+import './addnewtask.css';
 
 const AddNewTask = () => {
   const [newTask, setNewTask] = useState();
@@ -27,17 +28,13 @@ const AddNewTask = () => {
           name: newTask,
           isCompleted: false,
         };
-
-        taskContext.todoDispatch({
-          type: "ADD",
-          task: newTaskObject,
-        });
-
         await CreateTask(newTaskObject);
+        taskContext.setTasks(newTaskObject);
         setTaskValidation(false);
         taskContext.setLoadingStatus(false);
         setNewTask("");
       } catch (err) {
+        console.error("Error updating task:", err);
         alert("Something Went Wrong!");
       }
     }
@@ -46,11 +43,12 @@ const AddNewTask = () => {
   return (
     <Modal show={taskContext.modalShow}>
       <Modal.Header>
-        <Modal.Title>Add New Task</Modal.Title>
+        <Modal.Title className="titleText">Add New Task</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <label>Title</label>
+        <label className="titleText">Task</label>
         <input
+        className="inputBox"
           type="text"
           id="task"
           name="task"
