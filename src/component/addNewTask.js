@@ -3,21 +3,23 @@ import { v4 as uuidv4 } from "uuid";
 import TodoContext from "../store/todoContext";
 import { CreateTask } from "../api/todoApi";
 import { Modal, Button } from "react-bootstrap";
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import './addnewtask.css';
+import "./addnewtask.css";
 
 const AddNewTask = () => {
   const [newTask, setNewTask] = useState();
   const [taskValidation, setTaskValidation] = useState(false);
   const taskContext = useContext(TodoContext);
 
+  //input text box input value handle method
   const addNewTaskHandler = (event) => {
     event.preventDefault();
     console.log(event.target.value);
     setNewTask(event.target.value);
   };
 
+  //task create method.validate the text input.
   const submit = async () => {
     if (!newTask) {
       setTaskValidation(true);
@@ -32,15 +34,17 @@ const AddNewTask = () => {
         };
         await CreateTask(newTaskObject);
         taskContext.setTasks(newTaskObject);
-        toast.success("Task Created Successfully !", {
-          position: toast.POSITION.TOP_CENTER
-        });
         setTaskValidation(false);
         taskContext.setLoadingStatus(false);
         setNewTask("");
+        toast.success("Task Created Successfully !", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       } catch (err) {
-        console.error("Error updating task:", err);
-        alert("Something Went Wrong!");
+        console.error("Error creating task:", err);
+        toast.error("Something went wrong!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       }
     }
   };
@@ -53,14 +57,16 @@ const AddNewTask = () => {
       <Modal.Body>
         <label className="titleText">Task</label>
         <input
-        className="inputBox"
+          className=" form-control"
           type="text"
           id="task"
           name="task"
           placeholder="type your task..."
           onChange={addNewTaskHandler}
         />
-        {taskValidation && <p>Please enter the any task..</p>}
+        {taskValidation && (
+          <p className="validationMessage">Please enter the any task..</p>
+        )}
       </Modal.Body>
       <Modal.Footer>
         <Button
