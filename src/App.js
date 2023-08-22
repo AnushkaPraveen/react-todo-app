@@ -1,14 +1,14 @@
 import Home from "./component/home";
 import "./App.css";
-import 'bootstrap/dist/css/bootstrap.css';
-import { toast, ToastContainer } from 'react-toastify';
-
+import "bootstrap/dist/css/bootstrap.css";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
     <div className="App">
       <Home />
-      <ToastContainer/>
+      {/* toast message container  */}
+      <ToastContainer />
     </div>
   );
 }

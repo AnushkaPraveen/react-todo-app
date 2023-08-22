@@ -1,15 +1,21 @@
 import React, { useReducer, useEffect } from "react";
 import { GetAllTasks } from "../api/todoApi";
 
+//create context object
 const TodoContext = React.createContext({
-  tasks: "sample",
+  tasks: [],
+  modalShow: false,
+  loadingStatus: false,
 });
 
+//define default state
 const defaultTodoState = {
   tasks: [],
   modalShow: false,
   loadingStatus: false,
 };
+
+//reducer action function define,pass state and action into function.there is swicth case for handle new task add,task update,task delete,modal toggle,loading state.
 const todoReducer = (state, action) => {
   switch (action.type) {
     case "ADD":
@@ -46,17 +52,21 @@ const todoReducer = (state, action) => {
       return state;
   }
 };
+
+//context provider wrap around the other components.
 export const TodoContextProvider = (props) => {
   const [todoState, dispatchTodoAction] = useReducer(
     todoReducer,
     defaultTodoState
   );
+
+  //when task of defined state change,this useEffect work.
   useEffect(() => {
     setLoadingStatus(true);
     const fetchData = async () => {
       try {
-        const result = await GetAllTasks();
-        const tasksArray = result.items; // Assuming result.items is an array of tasks
+        const result = await GetAllTasks(); //get task from API call
+        const tasksArray = result.items;
         const filteredNewTasks = tasksArray.filter((newTask) =>
           todoState.tasks.every(
             (existingTask) => existingTask.id !== newTask.id
@@ -74,6 +84,7 @@ export const TodoContextProvider = (props) => {
     fetchData();
   }, [todoState.tasks]);
 
+  //define functions accroding to dispatch action in switch case
   const setTasks = (payload) => {
     dispatchTodoAction({ type: "ADD", task: payload });
   };

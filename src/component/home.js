@@ -8,11 +8,6 @@ import classes from "./home.module.css";
 
 const Home = () => {
   const taskContext = useContext(TodoContext);
-  if (taskContext.loadingStatus === true) {
-    <div className="spinner-border text-info" role="status">
-      <span className="visually-hidden">Loading...</span>
-    </div>;
-  }
   return (
     <>
       <h1 className={classes.mainTitle}>todo</h1>
@@ -29,7 +24,7 @@ const Home = () => {
       </button>
       <div className={classes.todolistSection}>
         <h5 className={classes.todoListTitle}>Todo List</h5>
-
+        {/* task item sort according to not completed order.*/}
         {taskContext.loadingStatus === true ? (
           <div className="spinner-border text-info" role="status">
             <span className="visually-hidden">Loading...</span>

@@ -1,5 +1,6 @@
 import axios from "axios";
 
+//task create API
 export const CreateTask = async (data) => {
   const url = "/api/v1/tasks";
   const apiKey = "eHTC1vBQCy2vmpJqDarU3hecbRMt60i21prC65VpeVuMYLDPKQ"; 
@@ -18,6 +19,7 @@ export const CreateTask = async (data) => {
   }
 };
 
+//task delete API
 export const DeleteTask = async (uuid) => {
   const url = "/api/v1/tasks";
   const apiKey = "eHTC1vBQCy2vmpJqDarU3hecbRMt60i21prC65VpeVuMYLDPKQ"; 
@@ -41,6 +43,7 @@ export const DeleteTask = async (uuid) => {
   }
 };
 
+//get all task API
 export const GetAllTasks=async() => {
   const url = "/api/v1/tasks";
   const apiKey = "eHTC1vBQCy2vmpJqDarU3hecbRMt60i21prC65VpeVuMYLDPKQ"; 
@@ -60,6 +63,7 @@ export const GetAllTasks=async() => {
   }
 }
 
+//Updated task API.update isCompleted state
 export const UpdateTask= async (uuid,status) => {
   const url = `/api/v1/tasks/${uuid}`;
   const apiKey = "eHTC1vBQCy2vmpJqDarU3hecbRMt60i21prC65VpeVuMYLDPKQ"; 
