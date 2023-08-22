@@ -1,6 +1,11 @@
 .titleText{
-    color: black;
+    color: black !important
 }
 .inputBox{
     margin-left: 10px;
 }
+
+.validationMessage{
+    color: red;
+}
+
