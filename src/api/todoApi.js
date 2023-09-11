@@ -8,58 +8,41 @@ const headers = {
   "Authorization": `Bearer ${apiKey}`,
 };
 
-//task create API
-export const CreateTask = async (data) => {
-  
+const apiRequest = async (method, url, data = null) => {
   try {
-    const response = await axios.post(baseUrl, [data], { headers });
+    const response = await axios({
+      method,
+      url,
+      data,
+      headers,
+    });
     console.log("Response:", response.data);
+    return response.data;
   } catch (error) {
     console.error("Error:", error);
     return error;
   }
 };
 
-//task delete API
+export const CreateTask = async (data) => {
+  const url = baseUrl;
+  return apiRequest("post", url, [data]);
+};
+
 export const DeleteTask = async (uuid) => {
   const url = `${baseUrl}/${uuid}`;
-  
-  try{
-    const response = await axios.delete(url, {headers });
-    console.log("Response:", response.data);
-  } catch (error) {
-    console.error("Error:", error);
-    return error;
-  }
+  return apiRequest("delete", url);
 };
 
-//get all task API
-export const GetAllTasks=async() => {
-  
-  try {
-    const response = await axios.get(baseUrl, { headers });
-    console.log("Response:", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error:", error);
-    return error;
-  }
-}
+export const GetAllTasks = async () => {
+  const url = baseUrl;
+  return apiRequest("get", url);
+};
 
-//Updated task API.update isCompleted state
-export const UpdateTask= async (uuid,status) => {
+export const UpdateTask = async (uuid, status) => {
   const url = `${baseUrl}/${uuid}`;
-
-  const payload={
-    isCompleted:!status
-  }
-  
-  try {
-    const response = await axios.put(url, payload,{ headers });
-    console.log("Response:", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error:", error);
-    return error;
-  }
-}
+  const payload = {
+    isCompleted: !status,
+  };
+  return apiRequest("put", url, payload);
+};
