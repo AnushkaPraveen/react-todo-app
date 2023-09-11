@@ -20,6 +20,7 @@ const TodoItem = ({ content }) => {
         position: toast.POSITION.TOP_CENTER,
       });
     } catch (err) {
+      todoContext.setLoadingStatus(false);
       console.error("Error updating task:", err);
       toast.error("Something went wrong!", {
         position: toast.POSITION.TOP_CENTER,
