@@ -1,17 +1,17 @@
 import { useContext } from "react";
 import AddNewTask from "./addNewTask";
-import TodoItem from "./todoItem";
 import TodoContext from "../store/todoContext";
 import { PiClipboardText } from "react-icons/pi";
 import { MdAddCircleOutline } from "react-icons/md";
 import classes from "./home.module.css";
+import TodoItemList from "./todoItemList";
 
 const Home = () => {
   const taskContext = useContext(TodoContext);
   return (
     <>
       <h1 className={classes.mainTitle}>todo</h1>
-      <AddNewTask />
+     <AddNewTask /> 
       <button
         type="button"
         className="btn btn-primary mt-3"
@@ -24,19 +24,13 @@ const Home = () => {
       </button>
       <div className={classes.todolistSection}>
         <h5 className={classes.todoListTitle}>Todo List</h5>
+        
         {/* task item sort according to not completed order.*/}
         {taskContext.loadingStatus === true ? (
           <div className="spinner-border text-info" role="status">
             <span className="visually-hidden">Loading...</span>
           </div>
-        ) : (
-          taskContext.items
-            .slice()
-            .sort((a, b) =>
-              a.isCompleted === b.isCompleted ? 0 : a.isCompleted ? 1 : -1
-            )
-            .map((task) => <TodoItem key={task.id} content={task} />)
-        )}
+        ) : (<TodoItemList/>)}
 
         {taskContext.items.length < 1 ? (
           <div className={classes.noDataSection}>
