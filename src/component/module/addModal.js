@@ -1,12 +1,14 @@
 import { useContext } from "react";
 import { Modal, Button } from "react-bootstrap";
-import TodoContext from "../store/todoContext";
+import {TodoContext}  from "../../store/todoContext";
 import "./addnewtask.css";
 
 const AddModal = (props) => {
-  const taskContext = useContext(TodoContext);
+  //const { items, modalShow, loadingStatus, setTasks, removeTask, updateTask, modalHandle } = useTodoContext();
+  //const taskContext = useContext(TodoContext);
+  const [todoState, todoAction] = useContext(TodoContext);
   return (
-    <Modal show={taskContext.modalShow}>
+    <Modal show={todoState.modalShow}>
       <Modal.Header>
         <Modal.Title className="titleText">Add New Task</Modal.Title>
       </Modal.Header>
@@ -28,7 +30,7 @@ const AddModal = (props) => {
         <Button
           variant="secondary"
           onClick={() => {
-            taskContext.modalHandle();
+            todoAction.setModalShow();
           }}
         >
           Cancel
