@@ -1,28 +1,6 @@
-import axios from "axios";
+import { apiRequest } from "./http-wrapper";
 
 const baseUrl = "/api/v1/tasks";
-const apiKey = "eHTC1vBQCy2vmpJqDarU3hecbRMt60i21prC65VpeVuMYLDPKQ"; 
-
-const headers = {
-  "Content-Type": "application/json",
-  "Authorization": `Bearer ${apiKey}`,
-};
-
-const apiRequest = async (method, url, data = null) => {
-  try {
-    const response = await axios({
-      method,
-      url,
-      data,
-      headers,
-    });
-    console.log("Response:", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error:", error);
-    return error;
-  }
-};
 
 export const CreateTask = async (data) => {
   const url = baseUrl;

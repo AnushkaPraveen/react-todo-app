@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import TodoContext from "../store/todoContext";
-import { CreateTask } from "../api/todoApi";
+import {TodoContext} from "../../store/todoContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./addnewtask.css";
@@ -10,12 +9,11 @@ import AddModal from "./addModal";
 const AddNewTask = () => {
   const [newTask, setNewTask] = useState();
   const [taskValidation, setTaskValidation] = useState(false);
-  const taskContext = useContext(TodoContext);
+  const [, todoAction] = useContext(TodoContext);
 
   //input text box input value handle method
   const addNewTaskHandler = (event) => {
     event.preventDefault();
-    console.log(event.target.value);
     setNewTask(event.target.value);
   };
 
@@ -25,17 +23,16 @@ const AddNewTask = () => {
       setTaskValidation(true);
     } else {
       try {
-        taskContext.modalHandle();
-        taskContext.setLoadingStatus(true);
+        todoAction.setModalShow();
+        todoAction.setLoadingStatus(true);
         const newTaskObject = {
           id: uuidv4(),
           name: newTask,
           isCompleted: false,
         };
-        await CreateTask(newTaskObject);
-        taskContext.setTasks(newTaskObject);
+        await todoAction.addTask(newTaskObject);
         setTaskValidation(false);
-        taskContext.setLoadingStatus(false);
+        todoAction.setLoadingStatus(false);
         setNewTask("");
         toast.success("Task Created Successfully !", {
           position: toast.POSITION.TOP_CENTER,

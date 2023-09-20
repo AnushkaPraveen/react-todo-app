@@ -1,26 +1,24 @@
 import { useContext } from "react";
-import TodoContext from "../store/todoContext";
+import { TodoContext } from "../../store/todoContext";
 import classes from "./todoItem.module.css";
 import { BiTrash } from "react-icons/bi";
-import { DeleteTask, UpdateTask } from "../api/todoApi";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const TodoItem = ({ content }) => {
-  const todoContext = useContext(TodoContext);
+  const [, todoAction] = useContext(TodoContext);
 
   //update isComplete state according to user checkbox handle
   const onCompleted = async (taskId, uuid, status) => {
     try {
-      todoContext.setLoadingStatus(true);
-      await UpdateTask(uuid, status);
-      todoContext.updateTask(taskId);
-      todoContext.setLoadingStatus(false);
+      todoAction.setLoadingStatus(true);
+      await todoAction.updateTask(taskId, uuid, status);
+      todoAction.setLoadingStatus(false);
       toast.success("Task Updated Successfully !", {
         position: toast.POSITION.TOP_CENTER,
       });
     } catch (err) {
-      todoContext.setLoadingStatus(false);
+      todoAction.setLoadingStatus(false);
       console.error("Error updating task:", err);
       toast.error("Something went wrong!", {
         position: toast.POSITION.TOP_CENTER,
@@ -31,10 +29,9 @@ const TodoItem = ({ content }) => {
   //delete task method
   const handleDelete = async (taskId, uuid) => {
     try {
-      todoContext.setLoadingStatus(true);
-      await DeleteTask(uuid);
-      todoContext.removeTask(taskId);
-      todoContext.setLoadingStatus(false);
+      todoAction.setLoadingStatus(true);
+      await todoAction.removeTask(taskId,uuid);
+      todoAction.setLoadingStatus(false);
       toast.success("Task Deleted Successfully !", {
         position: toast.POSITION.TOP_CENTER,
       });
