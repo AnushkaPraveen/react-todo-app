@@ -2,7 +2,7 @@ import Home from "./component/home";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { ToastContainer } from "react-toastify";
-import { ErrorBoundary } from "./component/ErrorBoundary";
+import { ErrorBoundary } from "./component/common/ErrorBoundary";
 
 function App() {
   return (

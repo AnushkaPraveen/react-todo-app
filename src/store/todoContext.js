@@ -1,12 +1,8 @@
-import React, { useReducer, useEffect } from "react";
-import { GetAllTasks } from "../api/todoApi";
+import React, { useReducer} from "react";
+import { todoActions } from './todoActions';
 
 //create context object
-const TodoContext = React.createContext({
-  tasks: [],
-  modalShow: false,
-  loadingStatus: false,
-});
+export const TodoContext = React.createContext({});
 
 //define default state
 const defaultTodoState = {
@@ -54,73 +50,19 @@ const todoReducer = (state, action) => {
 };
 
 //context provider wrap around the other components.
-export const TodoContextProvider = (props) => {
+export const TodoContextProvider = ({children}) => {
   const [todoState, dispatchTodoAction] = useReducer(
     todoReducer,
     defaultTodoState
   );
 
-  //when task of defined state change,this useEffect work.
-  useEffect(() => {
-    setLoadingStatus(true);
-    const fetchData = async () => {
-      try {
-        const result = await GetAllTasks(); //get task from API call
-        const tasksArray = result.items;
-        const filteredNewTasks = tasksArray.filter((newTask) =>
-          todoState.tasks.every(
-            (existingTask) => existingTask.id !== newTask.id
-          )
-        );
-
-        filteredNewTasks.map((task) => setTasks(task));
-
-        setLoadingStatus(false);
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
-      }
-    };
-
-    fetchData();
-  }, [todoState.tasks]);
-
-  //define functions accroding to dispatch action in switch case
-  const setTasks = (payload) => {
-    dispatchTodoAction({ type: "ADD", task: payload });
-  };
-
-  const removeTask = (id) => {
-    dispatchTodoAction({ type: "REMOVE", id: id });
-  };
-
-  const updateTask = (id) => {
-    dispatchTodoAction({ type: "UPDATE", id: id });
-  };
-
-  const setLoadingStatus = (status) => {
-    dispatchTodoAction({ type: "LOADING", status: status });
-  };
-
-  const modalHandle = () => {
-    dispatchTodoAction({ type: "MODALSHOW" });
-  };
-
-  const todoContext = {
-    items: todoState.tasks,
-    modalShow: todoState.modalShow,
-    loadingStatus: todoState.loadingStatus,
-    todoDispatch: dispatchTodoAction,
-    setLoadingStatus: setLoadingStatus,
-    modalHandle: modalHandle,
-    setTasks: setTasks,
-    removeTask: removeTask,
-    updateTask: updateTask,
-  };
+  const dispatchActions = todoActions(dispatchTodoAction);
+  
   return (
-    <TodoContext.Provider value={todoContext}>
-      {props.children}
+    <TodoContext.Provider value={[todoState,dispatchActions]}>
+      {children}
     </TodoContext.Provider>
   );
 };
 
-export default TodoContext;
+//export default TodoContext;

@@ -1,11 +1,12 @@
 import { useContext } from "react";
-import TodoContext from "../store/todoContext";
-import TodoItem from "./todoItem";
+import {TodoContext} from "../store/todoContext";
+import TodoItem from "./module/todoItem";
 const TodoItemList = () => {
-  const taskContext = useContext(TodoContext);
+
+  const [todoState, ] = useContext(TodoContext);
   return (
     <>
-      {taskContext.items
+      {todoState.tasks
         .slice()
         .sort((a, b) =>
           a.isCompleted === b.isCompleted ? 0 : a.isCompleted ? 1 : -1
